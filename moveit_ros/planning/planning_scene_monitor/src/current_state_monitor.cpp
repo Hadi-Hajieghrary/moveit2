@@ -254,7 +254,7 @@ bool CurrentStateMonitor::waitForCurrentState(const rclcpp::Time& t, double wait
     {
       state_update_condition_.wait_for(lock, (timeout - elapsed).to_chrono<std::chrono::duration<double>>());
     }
-    elapsed = middleware_handle_->now() - start;
+    elapsed = middleware_handle_->now(); - start;
     if (elapsed > timeout)
     {
       RCLCPP_INFO(LOGGER,
