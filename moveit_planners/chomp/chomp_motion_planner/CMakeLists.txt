@@ -32,7 +32,6 @@ ament_target_dependencies(chomp_motion_planner ${THIS_PACKAGE_INCLUDE_DEPENDS})
 
 target_compile_options(chomp_motion_planner PRIVATE -fopenmp)
 
-
 install(
   TARGETS chomp_motion_planner
   EXPORT chomp_motion_plannerTargets
