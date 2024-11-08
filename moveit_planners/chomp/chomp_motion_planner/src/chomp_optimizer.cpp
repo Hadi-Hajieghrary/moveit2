@@ -563,9 +563,7 @@ void ChompOptimizer::calculateCollisionIncrements()
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_real_distribution<> dis(0.0, 1.0);
-  
   collision_increments_.setZero(num_vars_free_, num_joints_);
-  
   int start_point = 0;
   int end_point = free_vars_end_;
 
