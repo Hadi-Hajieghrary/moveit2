@@ -573,14 +573,9 @@ void ChompOptimizer::calculateCollisionIncrements()
   // In stochastic descent, simply use a random point in the trajectory, rather than all the trajectory points.
   if (parameters_->use_stochastic_descent_)
   {
-<<<<<<< HEAD
-    start_point = static_cast<int>(rsl::uniform_real(0., 1.) * (free_vars_end_ - free_vars_start_) + free_vars_start_);
-=======
     
     start_point = static_cast<int>(dis(gen) * (free_vars_end_ - free_vars_start_) + free_vars_start_);
 
-    
->>>>>>> 39881a592 (Added OpenMP to improve the collision checking.)
     start_point = std::clamp(start_point, free_vars_start_, free_vars_end_);
     end_point = start_point;
   }
@@ -590,7 +585,7 @@ void ChompOptimizer::calculateCollisionIncrements()
   }
 
   // Parallelize the outer loop over 'i' using OpenMP
-  #pragma omp parallel for private(potential, vel_mag_sq, vel_mag, potential_gradient, normalized_velocity, orthogonal_projector, curvature_vector, cartesian_gradient)
+#pragma omp parallel for private(potential, vel_mag_sq, vel_mag, potential_gradient, normalized_velocity, orthogonal_projector, curvature_vector, cartesian_gradient)
   for (int i = start_point; i <= end_point; ++i)
   {
     for (int j = 0; j < num_collision_points_; ++j)
@@ -616,12 +611,12 @@ void ChompOptimizer::calculateCollisionIncrements()
       if (parameters_->use_pseudo_inverse_)
       {
         calculatePseudoInverse();
-        #pragma omp critical
+#pragma omp critical
         collision_increments_.row(i - free_vars_start_).transpose() -= jacobian_pseudo_inverse_ * cartesian_gradient;
       }
       else
       {
-        #pragma omp critical
+#pragma omp critical
         collision_increments_.row(i - free_vars_start_).transpose() -= jacobian_.transpose() * cartesian_gradient;
       }
     }
