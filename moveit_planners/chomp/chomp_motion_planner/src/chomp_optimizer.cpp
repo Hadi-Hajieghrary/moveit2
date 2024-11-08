@@ -289,7 +289,8 @@ void ChompOptimizer::registerParents(const moveit::core::JointModel* model)
 
 bool ChompOptimizer::optimize()
 {
-  if (trajectory_.getNumPoints() == 0 || cost_.isEmpty()) {
+  if (trajectory_.getNumPoints() == 0 || cost_.isEmpty())
+  {
     throw std::runtime_error("Optimizer received uninitialized trajectory or cost data.");
   }
   bool optimization_result = 0;
@@ -548,7 +549,6 @@ void ChompOptimizer::calculateSmoothnessIncrements()
   }
 }
 
-
 void ChompOptimizer::calculateCollisionIncrements()
 {
   double potential;
@@ -559,7 +559,6 @@ void ChompOptimizer::calculateCollisionIncrements()
   Eigen::Matrix3d orthogonal_projector;
   Eigen::Vector3d curvature_vector;
   Eigen::Vector3d cartesian_gradient;
-
 
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -573,7 +572,6 @@ void ChompOptimizer::calculateCollisionIncrements()
   // In stochastic descent, simply use a random point in the trajectory, rather than all the trajectory points.
   if (parameters_->use_stochastic_descent_)
   {
-    
     start_point = static_cast<int>(dis(gen) * (free_vars_end_ - free_vars_start_) + free_vars_start_);
 
     start_point = std::clamp(start_point, free_vars_start_, free_vars_end_);
@@ -585,7 +583,8 @@ void ChompOptimizer::calculateCollisionIncrements()
   }
 
   // Parallelize the outer loop over 'i' using OpenMP
-#pragma omp parallel for private(potential, vel_mag_sq, vel_mag, potential_gradient, normalized_velocity, orthogonal_projector, curvature_vector, cartesian_gradient)
+#pragma omp parallel for private(potential, vel_mag_sq, vel_mag, potential_gradient, normalized_velocity,              \
+                                 orthogonal_projector, curvature_vector, cartesian_gradient)
   for (int i = start_point; i <= end_point; ++i)
   {
     for (int j = 0; j < num_collision_points_; ++j)
@@ -622,7 +621,6 @@ void ChompOptimizer::calculateCollisionIncrements()
     }
   }
 }
-
 
 void ChompOptimizer::calculatePseudoInverse()
 {
